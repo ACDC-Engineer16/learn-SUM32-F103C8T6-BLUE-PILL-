@@ -63,7 +63,7 @@ Called automatically on each received byte:
 
 ### Main Loop
 
-```C
+```
 if (flag0 == 1):
     flag0 = 0
     find length of RxData (scan until null terminator)
@@ -93,6 +93,24 @@ LED ON → 500 ms → LED OFF → 500 ms → repeat
 2. Open a serial terminal (e.g., PuTTY, Tera Term) at **115200 baud, 8N1**.
 3. Type a message and press **Enter** (`\n`).
 4. The Blue Pill echoes the message back within ~1 second.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `main.c` | Application entry point, interrupt callback, echo logic |
+| `main.h` | Pin definitions (`LEDOUT_Pin`, `LEDOUT_GPIO_Port`) |
+
+---
+
+## Build & Flash
+
+1. Open the project in **Keil MDK V5**.
+2. Build with **Ctrl+F7**.
+3. Flash via **ST-Link V2** (ensure STSW-LINK009 driver is installed).
+4. Open terminal at **115200 baud, 8N1** on the USB-to-TTL COM port.
 
 ---
 

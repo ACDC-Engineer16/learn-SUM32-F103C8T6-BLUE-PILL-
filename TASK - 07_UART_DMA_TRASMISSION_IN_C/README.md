@@ -1,48 +1,98 @@
-# UART DMA Transmission
+# STM32 UART DMA Transmission Example (HAL)
 
-## Objective
+## 📌 Overview
+This project demonstrates UART transmission using **DMA (Direct Memory Access)** on an STM32 microcontroller (HAL library). The program continuously sends a 250-byte buffer over **USART2** while using DMA callbacks to modify the buffer dynamically during transmission. An onboard LED is also toggled in the main loop.
 
-Transmit 250 bytes using UART DMA mode while blinking the onboard LED.
+---
 
-## Hardware
+## ⚙️ Features
+- UART2 transmission at **115200 baud rate**
+- DMA-based non-blocking data transmission
+- Half-transfer and full-transfer DMA callbacks
+- Dynamic buffer modification during transmission
+- LED blink for visual system activity indication
+- Automatic DMA stop after a condition is met
 
-* STM32 Blue Pill (STM32F103C8T6)
-* USB-to-TTL Converter
-* Onboard LED (PC13)
+---
 
-## Configuration
+## 🧠 How It Works
 
-* UART: USART2
-* Baud Rate: 115200
-* DMA: UART TX (DMA1 Channel 7)
-* LED Pin: PC13
+### 1. Initialization
+- System clock configured using HSI
+- GPIO initialized for LED output
+- USART2 initialized for TX/RX
+- DMA configured for USART2 TX
 
-## Main Logic
+---
+
+### 2. Transmission Buffer
+A 250-byte array is used:
 
 ```c
+uint8_t TxData[250];
+
+for(uint8_t i = 0; i < 250; i++)
+{
+    TxData[i] = i;
+}
+```
+### 3. DMA Transmission
+
+- DMA transmission is started once in 
+```C
+main():
+
 HAL_UART_Transmit_DMA(&huart2, TxData, 250);
 ```
 
+- This sends data over UART without blocking CPU execution.
+
+### 4. DMA Callbacks
+Half Transfer Callback
+
+- Triggered when first half (0–124) is transmitted:
+```c
+void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart)
+{
+    for(uint8_t i = 0; i < 125; i++)
+    {
+        TxData[i] = temp;
+    }
+    temp++;
+}
+```
+- Full Transfer Callback
+
+- Triggered when full buffer is transmitted:
 ```c
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if(huart->Instance == USART2)
+    for(uint8_t i = 125; i < 250; i++)
+    {
+        TxData[i] = temp;
+    }
+    temp++;
+
+    if(temp > 59)
+        HAL_UART_DMAStop(&huart2);
+
+    if (huart->Instance == USART2)
         flag0 = 1;
 }
 ```
 
-## Working
+### 5. LED Blinking Loop
 
-* A buffer containing values 0–249 is created.
-* DMA transfers the data buffer to USART2 automatically.
-* CPU is free while DMA handles the transmission.
-* After transmission completes, a callback function sets a flag for the next transfer.
-* The onboard LED blinks every 500 ms.
+- Main loop toggles LED every 500 ms:
+```c
+HAL_GPIO_WritePin(LEDOUT_GPIO_Port, LEDOUT_Pin, GPIO_PIN_RESET);
+HAL_Delay(500);
+HAL_GPIO_WritePin(LEDOUT_GPIO_Port, LEDOUT_Pin, GPIO_PIN_SET);
+HAL_Delay(500);
+```
 
-## Learning
-
-* UART DMA Transmission
-* DMA Configuration
-* UART Transfer Complete Callback
-* CPU Offloading using DMA
-* Concurrent UART and GPIO Operations
+### Program Behavior
+    - UART continuously transmits 250-byte blocks via DMA
+    - Buffer content changes after each half/full transfer
+    - Transmission stops when temp > 59
+    - LED blinks continuously as a heartbeat indicator

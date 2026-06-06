@@ -44,7 +44,6 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t TxData[250];
-uint8_t flag0 = 1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -96,6 +95,7 @@ int main(void)
 	{
 			TxData[i] = i;
 	}
+	HAL_UART_Transmit_IT(&huart2,TxData,250);
 
   /* USER CODE END 2 */
 
@@ -104,12 +104,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-		
-		if(flag0 == 1){
-				
-			HAL_UART_Transmit_IT(&huart2,TxData,250);
-			flag0 = 0;
-		}
 		
 		 HAL_GPIO_WritePin(LEDOUT_GPIO_Port, LEDOUT_Pin, GPIO_PIN_RESET); /* ON */
 		HAL_Delay(500);
@@ -225,7 +219,7 @@ static void MX_GPIO_Init(void)
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
   if (huart->Instance == USART2)
-    flag0 = 1;
+    HAL_UART_Transmit_IT(&huart2,TxData,250);
 }
 /* USER CODE END 4 */
 

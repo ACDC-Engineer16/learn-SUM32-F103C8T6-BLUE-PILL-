@@ -20,7 +20,15 @@ Transmit 250 bytes using UART DMA mode while blinking the onboard LED.
 ## Main Logic
 
 ```c
-HAL_UART_Transmit_DMA(&huart2, TxData, 250);
+flag0 = 1;
+while (1)
+  {
+	if(flag0 == 1){
+		HAL_UART_Transmit_DMA(&huart2,TxData,250);
+		flag0 = 0;
+	}
+	// other code work
+  }
 ```
 
 ```c
@@ -44,5 +52,5 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 * UART DMA Transmission
 * DMA Configuration
 * UART Transfer Complete Callback
-* CPU Offloading using DMA
+* CPU Offloading using DMA. **So that more faster then IT call**
 * Concurrent UART and GPIO Operations

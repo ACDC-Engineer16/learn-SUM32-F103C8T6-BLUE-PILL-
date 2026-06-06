@@ -100,7 +100,7 @@ The sender must prefix the data with a **4-digit ASCII size field**:
 
 The main loop checks whether the **remaining expected bytes fit within one DMA half-buffer** (i.e., the transfer is nearly complete):
 
-```
+```C
 if ((size - indx) > 0 AND (size - indx) < 128):
     if HTC == 1:  copy from RxData[128..], reset state, restart DMA
     if FTC == 1:  copy from RxData[0..],   reset state, restart DMA
@@ -127,23 +127,6 @@ After each check, the DMA is stopped and restarted to prepare for the next messa
 
 ---
 
-## Files
-
-| File | Description |
-|------|-------------|
-| `main.c` | Application entry, DMA callbacks, assembly logic |
-| `main.h` | Pin definitions (`LEDOUT_Pin`, `LEDOUT_GPIO_Port`) |
-
----
-
-## Build & Flash
-
-1. Open the project in **Keil MDK V5**.
-2. Build with **Ctrl+F7**.
-3. Flash via **ST-Link V2** (ensure STSW-LINK009 driver is installed).
-4. Send data from a PC terminal or script at **115200 baud, 8N1** with the 4-byte size prefix.
-
----
 
 ## Notes & Limitations
 

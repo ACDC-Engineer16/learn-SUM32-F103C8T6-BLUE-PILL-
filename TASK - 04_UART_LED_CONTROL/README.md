@@ -1,71 +1,94 @@
-# Button Interrupt with Relay Control
+# STM32 UART Controlled LED
 
-## Objective
+## Overview
+This project demonstrates how to control an LED using UART communication on an STM32 microcontroller using the HAL library.
 
-Control two relays using a push button interrupt with software debouncing.
+The user sends commands via UART:
+- `1` → Turn LED ON
+- `0` → Turn LED OFF
 
-## Hardware
+The microcontroller responds back with status messages over UART.
 
-* STM32 Blue Pill (STM32F103C8T6)
-* Push Button
-* 2-Channel Relay Module
-* Onboard LED (PC13)
-
-## Configuration
-
-* PC13 → LED Output
-* SWITCH_Pin → External Interrupt (Rising/Falling Edge)
-* RELAY1_Pin → Output
-* RELAY2_Pin → Output
+---
 
 ## Features
+- UART communication at **115200 baud**
+- Simple command-based LED control
+- Real-time user interaction via serial terminal
+- Uses STM32 HAL library
 
-* External Interrupt (EXTI)
-* Software Debouncing (50 ms)
-* Relay Control
-* Non-Blocking LED Blink (500 ms)
+---
 
-## Main Logic
+## Hardware Requirements
+- STM32 microcontroller board (e.g., STM32F1 / STM32F4 series)
+- On-board or external LED connected to `LEDOUT_Pin`
+- USB to UART interface (or onboard ST-Link Virtual COM Port)
+- PC with serial terminal (PuTTY, Tera Term, Arduino Serial Monitor, etc.)
 
-```c
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-    if(GPIO_Pin == SWITCH_Pin)
-    {
-        btnEdgeDetected = 1;
-        btnEdgeTime = HAL_GetTick();
-    }
-}
-```
+---
 
-```c
-if(btnEdgeDetected)
-{
-    if((HAL_GetTick() - btnEdgeTime) >= 50)
-    {
-        btnEdgeDetected = 0;
+## Communication Settings
+- Baud Rate: **115200**
+- Data Bits: **8**
+- Stop Bits: **1**
+- Parity: **None**
+- Flow Control: **None**
 
-        if(HAL_GPIO_ReadPin(SWITCH_GPIO_Port, SWITCH_Pin) == GPIO_PIN_RESET)
-        {
-            HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(RELAY2_GPIO_Port, RELAY2_Pin, GPIO_PIN_SET);
-        }
-    }
-}
-```
+---
 
-## Working
+## How It Works
 
-* Button edge generates an interrupt.
-* Interrupt only records the event and timestamp.
-* Main loop waits 50 ms for debounce.
-* Relays are switched according to button state.
-* PC13 LED toggles every 500 ms without blocking the program.
+1. MCU initializes:
+   - HAL library
+   - System clock
+   - GPIO for LED
+   - USART2 for UART communication
 
-## Learning
+2. Program continuously runs in an infinite loop:
+   - Sends prompt:
+     ```
+     Type 1=LED ON, 0=LED OFF:
+     ```
+   - Waits for a single byte input via UART
 
-* GPIO External Interrupt (EXTI)
-* Interrupt Callback Function
-* Software Debouncing
-* Non-Blocking Timing using HAL_GetTick()
-* Relay Control using GPIO
+3. Based on received input:
+   - `'1'` → LED turns ON (GPIO reset) and sends `"LED ON"`
+   - `'0'` → LED turns OFF (GPIO set) and sends `"LED OFF"`
+   - Any other input → `"Unknown!"`
+
+---
+
+## Code Logic Summary
+- Uses `HAL_UART_Receive()` for blocking input
+- Uses `HAL_UART_Transmit()` for responses
+- Uses GPIO write functions to control LED state
+- Simple conditional logic for command handling
+
+---
+
+## GPIO Configuration
+- `LEDOUT_Pin` is configured as:
+  - Output Push-Pull
+  - No Pull-up / Pull-down
+  - Low speed
+
+---
+
+## Example Output (Serial Monitor)
+Type 1=LED ON, 0=LED OFF:    
+1    
+LED ON
+
+Type 1=LED ON, 0=LED OFF:    
+0    
+LED OFF   
+
+
+---
+
+## Notes
+- Newline character (`\n`) is ignored and re-prompts input
+- Blocking UART receive is used (`HAL_MAX_DELAY`)
+- LED logic assumes active-low configuration (RESET = ON)
+
+---
