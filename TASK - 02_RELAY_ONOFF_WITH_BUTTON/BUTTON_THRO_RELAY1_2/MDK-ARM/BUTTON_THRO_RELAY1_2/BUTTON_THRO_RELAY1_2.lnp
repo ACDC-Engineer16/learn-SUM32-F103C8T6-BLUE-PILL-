@@ -1,0 +1,21 @@
+--cpu Cortex-M3
+"button_thro_relay1_2\startup_stm32f103xb.o"
+"button_thro_relay1_2\main.o"
+"button_thro_relay1_2\stm32f1xx_it.o"
+"button_thro_relay1_2\stm32f1xx_hal_msp.o"
+"button_thro_relay1_2\stm32f1xx_hal_gpio_ex.o"
+"button_thro_relay1_2\stm32f1xx_hal.o"
+"button_thro_relay1_2\stm32f1xx_hal_rcc.o"
+"button_thro_relay1_2\stm32f1xx_hal_rcc_ex.o"
+"button_thro_relay1_2\stm32f1xx_hal_gpio.o"
+"button_thro_relay1_2\stm32f1xx_hal_dma.o"
+"button_thro_relay1_2\stm32f1xx_hal_cortex.o"
+"button_thro_relay1_2\stm32f1xx_hal_pwr.o"
+"button_thro_relay1_2\stm32f1xx_hal_flash.o"
+"button_thro_relay1_2\stm32f1xx_hal_flash_ex.o"
+"button_thro_relay1_2\stm32f1xx_hal_exti.o"
+"button_thro_relay1_2\system_stm32f1xx.o"
+--strict --scatter "BUTTON_THRO_RELAY1_2\BUTTON_THRO_RELAY1_2.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "BUTTON_THRO_RELAY1_2.map" -o BUTTON_THRO_RELAY1_2\BUTTON_THRO_RELAY1_2.axf

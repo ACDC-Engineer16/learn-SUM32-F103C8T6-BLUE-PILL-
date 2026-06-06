@@ -1,0 +1,22 @@
+--cpu Cortex-M3
+"module_usart_it\startup_stm32f103xb.o"
+"module_usart_it\main.o"
+"module_usart_it\stm32f1xx_it.o"
+"module_usart_it\stm32f1xx_hal_msp.o"
+"module_usart_it\stm32f1xx_hal_gpio_ex.o"
+"module_usart_it\stm32f1xx_hal_uart.o"
+"module_usart_it\stm32f1xx_hal.o"
+"module_usart_it\stm32f1xx_hal_rcc.o"
+"module_usart_it\stm32f1xx_hal_rcc_ex.o"
+"module_usart_it\stm32f1xx_hal_gpio.o"
+"module_usart_it\stm32f1xx_hal_dma.o"
+"module_usart_it\stm32f1xx_hal_cortex.o"
+"module_usart_it\stm32f1xx_hal_pwr.o"
+"module_usart_it\stm32f1xx_hal_flash.o"
+"module_usart_it\stm32f1xx_hal_flash_ex.o"
+"module_usart_it\stm32f1xx_hal_exti.o"
+"module_usart_it\system_stm32f1xx.o"
+--strict --scatter "MODULE_USART_IT\MODULE_USART_IT.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "MODULE_USART_IT.map" -o MODULE_USART_IT\MODULE_USART_IT.axf
