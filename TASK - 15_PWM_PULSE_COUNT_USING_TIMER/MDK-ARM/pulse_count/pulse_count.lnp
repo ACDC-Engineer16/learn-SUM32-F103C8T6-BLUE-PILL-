@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"pulse_count\startup_stm32f103xb.o"
+"pulse_count\main.o"
+"pulse_count\stm32f1xx_it.o"
+"pulse_count\stm32f1xx_hal_msp.o"
+"pulse_count\stm32f1xx_hal_gpio_ex.o"
+"pulse_count\stm32f1xx_hal_tim.o"
+"pulse_count\stm32f1xx_hal_tim_ex.o"
+"pulse_count\stm32f1xx_hal.o"
+"pulse_count\stm32f1xx_hal_rcc.o"
+"pulse_count\stm32f1xx_hal_rcc_ex.o"
+"pulse_count\stm32f1xx_hal_gpio.o"
+"pulse_count\stm32f1xx_hal_dma.o"
+"pulse_count\stm32f1xx_hal_cortex.o"
+"pulse_count\stm32f1xx_hal_pwr.o"
+"pulse_count\stm32f1xx_hal_flash.o"
+"pulse_count\stm32f1xx_hal_flash_ex.o"
+"pulse_count\stm32f1xx_hal_exti.o"
+"pulse_count\system_stm32f1xx.o"
+--strict --scatter "pulse_count\pulse_count.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "pulse_count.map" -o pulse_count\pulse_count.axf
