@@ -1,0 +1,24 @@
+--cpu Cortex-M3
+"steper_drive\startup_stm32f103xb.o"
+"steper_drive\main.o"
+"steper_drive\stm32f1xx_it.o"
+"steper_drive\stm32f1xx_hal_msp.o"
+"steper_drive\stm32f1xx_hal_gpio_ex.o"
+"steper_drive\stm32f1xx_hal_tim.o"
+"steper_drive\stm32f1xx_hal_tim_ex.o"
+"steper_drive\stm32f1xx_hal.o"
+"steper_drive\stm32f1xx_hal_rcc.o"
+"steper_drive\stm32f1xx_hal_rcc_ex.o"
+"steper_drive\stm32f1xx_hal_gpio.o"
+"steper_drive\stm32f1xx_hal_dma.o"
+"steper_drive\stm32f1xx_hal_cortex.o"
+"steper_drive\stm32f1xx_hal_pwr.o"
+"steper_drive\stm32f1xx_hal_flash.o"
+"steper_drive\stm32f1xx_hal_flash_ex.o"
+"steper_drive\stm32f1xx_hal_exti.o"
+"steper_drive\stm32f1xx_hal_uart.o"
+"steper_drive\system_stm32f1xx.o"
+--strict --scatter "STEPER_DRIVE\STEPER_DRIVE.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "STEPER_DRIVE.map" -o STEPER_DRIVE\STEPER_DRIVE.axf
